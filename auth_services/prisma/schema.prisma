@@ -6,10 +6,20 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  // Make sure this path aligns with your imports
+  output   = "../node_modules/.prisma/client"
+}
+datasource db {
+  provider = "mongodb"
+  // Use the DATABASE_URL environment variable to connect to your database
+  url      = env("DATABASE_URL")
 }
 
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  email String @unique
+  password String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 }
